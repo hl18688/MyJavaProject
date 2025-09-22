@@ -1,0 +1,63 @@
+package junePractice;
+
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class ErailAutomation {
+
+	public static void main(String[] args) {
+		
+        ChromeOptions options = new ChromeOptions();
+        
+        Map<String, Object> prefs = new HashMap<>();
+        
+        prefs.put("profile.default_content_setting_values.notifications", 2); 
+        
+        options.setExperimentalOption("prefs", prefs);
+		
+		options.addArguments("--start-maximized");
+		
+		ChromeDriver driver = new ChromeDriver(options);
+		
+		driver.get("https://www.irctc.co.in/");
+		
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		
+		driver.findElement(By.xpath("//button[contains(text(),'OK')]")).click();
+		
+		WebElement fromBox = driver.findElement(By.xpath("//input[@placeholder='From*']"));
+		
+        fromBox.click();
+        
+        fromBox.sendKeys("MGR CHENNAI CTL");
+        
+        WebElement firstSuggestion = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'MGR CHENNAI CTL - MAS')]")));
+        
+        firstSuggestion.click();
+        
+        
+        WebElement toBox = driver.findElement(By.xpath("//input[@placeholder='To*']"));
+        
+        toBox.click();
+        
+        toBox.sendKeys("NEW DELHI");
+		
+        WebElement secondSuggestion = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(),'NEW DELHI - NDLS')]")));
+        
+        secondSuggestion.click();
+        
+	}
+
+}
